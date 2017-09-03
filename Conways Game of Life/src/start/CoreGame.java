@@ -13,57 +13,56 @@ import java.awt.image.BufferStrategy;
 import javax.swing.Timer;
 
 public class CoreGame extends Canvas {
-	private byte[][] cells, newCells; 
-	
+	private byte[][] cells, newCells;
+
 	private long cycles;
 	private int size = 100;
 	private Timer t;
 	private BufferStrategy bf;
 	private GameFrame g;
-	
+
 	CoreGame(final GameFrame g) {
-	    this.g = g;
+		this.g = g;
 		bf = getBufferStrategy();
-		setSize(size,size);
+		setSize(size, size);
 		setBackground(Color.WHITE);
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				int x = e.getX()/(getWidth()/size);
-				int y = e.getY()/(getHeight()/size);
-				
-				
-				//kliknutie mimo mriezky
-				if((x>100) || (y>100)){ 
-					x=0;
-					y=0;
-					
+
+				int x = e.getX() / (getWidth() / size);
+				int y = e.getY() / (getHeight() / size);
+
+				// kliknutie mimo mriezky
+				if ((x > 100) || (y > 100)) {
+					x = 0;
+					y = 0;
+
 				}
-				
-				cells[x][y] = (byte) (~cells[x][y] & 1); //ozivnutie bunky
-				
+
+				cells[x][y] = (byte) (~cells[x][y] & 1); // ozivnutie bunky
+
 				repaint();
 			}
 		});
-		t = new Timer(500,new ActionListener() {
-            
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                cycle();
-                g.buttons.setCycles();
-            }
-        });
-		
+		t = new Timer(500, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cycle();
+				g.buttons.setCycles();
+			}
+		});
+
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		createBufferStrategy(1);
-		
+
 		bf = getBufferStrategy();
 		g = null;
-		try{
+		try {
 			g = bf.getDrawGraphics();
 			render(g);
 		} finally {
@@ -71,23 +70,24 @@ public class CoreGame extends Canvas {
 		}
 		bf.show();
 		Toolkit.getDefaultToolkit().sync();
-		
+
 	}
-	
-	//vykreslenie hracej plochy
+
+	// vykreslenie hracej plochy
 	private void render(Graphics g) {
-		for(int x = 0; x < cells.length; x++ ) {
+		for (int x = 0; x < cells.length; x++) {
 			for (int y = 0; y < cells[x].length; y++) {
-				if(cells[x][y] ==1){
+				if (cells[x][y] == 1) {
 					g.setColor(Color.black);
-					g.fillRect(x*(getWidth()/size), y*(getHeight()/size),getWidth()/size ,getWidth()/size);
+					g.fillRect(x * (getWidth() / size), y * (getHeight() / size), getWidth() / size, getWidth() / size);
 				}
 				g.setColor(Color.GRAY);
-				g.drawRect(x*(getWidth()/size), y*(getHeight()/size),getWidth()/size ,getWidth()/size);
+				g.drawRect(x * (getWidth() / size), y * (getHeight() / size), getWidth() / size, getWidth() / size);
 			}
 		}
 	}
-	//resetnutie hracej plochy
+
+	// resetnutie hracej plochy
 	public void init() {
 		cells = new byte[size][size];
 		// nastavenie vsetkych buniek ako mrtve
@@ -100,64 +100,60 @@ public class CoreGame extends Canvas {
 		g.buttons.setCycles();
 		repaint();
 	}
-	
 
-	//kolko ubehlo tickov od zaciatku simulacie
+	// kolko ubehlo tickov od zaciatku simulacie
 	public long getCycles() {
 		return cycles;
 	}
 
-	//start simulacie
+	// start simulacie
 	public void start() {
 		t.start();
-		
+
 	}
-	//zastavenie simulacie
+
+	// zastavenie simulacie
 	public void stop() {
 		t.stop();
-		
+
 	}
-	// v tejto metode zistim kolko ma dana bunka susedov a teda ci zije alebo je mrtva alebo sa ma vytvorit nova bunka
+
+	// v tejto metode zistim kolko ma dana bunka susedov a teda ci zije alebo je
+	// mrtva alebo sa ma vytvorit nova bunka
 	private void cycle() {
 		cycles++;
 		newCells = new byte[size][size];
 		int totalSum = 0;
-		// The array should wrap around so that cells[100][101] refers to the top right cell
+		// The array should wrap around so that cells[100][101] refers to the
+		// top right cell
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[i].length; j++) {
-				//pocita ju sa sa pozicie susednych riadkov a stlpcov, pomocou modula si zistim kde sa ma nachadzat 
-				//riadok/stlpec v nekonecnom poli
-				int ip = (((i+1)%cells.length)+cells.length)%cells.length;
-				int im = (((i-1)%cells.length)+cells.length)%cells.length;
-				int jp = (((j+1)%cells[i].length)+cells[i].length)%cells[i].length;
-				int jm = (((j-1)%cells[i].length)+cells[i].length)%cells[i].length;
-				
-				byte[] neighboursCells = {
-					cells[im][j],
-					cells[ip][j],
-					cells[i][jp],
-					cells[i][jm],
-					cells[ip][jp],
-					cells[ip][jm],
-					cells[im][jp],
-					cells[im][jm]
-				};
-				
+				// pocita ju sa sa pozicie susednych riadkov a stlpcov, pomocou
+				// modula si zistim kde sa ma nachadzat
+				// riadok/stlpec v nekonecnom poli
+				int ip = (((i + 1) % cells.length) + cells.length) % cells.length;
+				int im = (((i - 1) % cells.length) + cells.length) % cells.length;
+				int jp = (((j + 1) % cells[i].length) + cells[i].length) % cells[i].length;
+				int jm = (((j - 1) % cells[i].length) + cells[i].length) % cells[i].length;
+
+				byte[] neighboursCells = { cells[im][j], cells[ip][j], cells[i][jp], cells[i][jm], cells[ip][jp],
+						cells[ip][jm], cells[im][jp], cells[im][jm] };
+
 				byte sum = 0;
-				for(byte b: neighboursCells) {
+				for (byte b : neighboursCells) {
 					sum += b;
 				}
 				totalSum += sum;
-				if(cells[i][j] == 1){
+				if (cells[i][j] == 1) {
 					// pocet zivych susediacich buniek
-					if(sum < 2) {
+					if (sum < 2) {
 						newCells[i][j] = 0;
-					} else if(sum > 3) {
+					} else if (sum > 3) {
 						newCells[i][j] = 0;
 					} else {
 						newCells[i][j] = 1;
 					}
-				} else if(sum == 3) {
+				} else if (sum == 3) {
 					// 3 zive bunky
 					newCells[i][j] = 1;
 				} else {
@@ -165,9 +161,9 @@ public class CoreGame extends Canvas {
 				}
 			}
 		}
-		if(totalSum == 0) {
+		if (totalSum == 0) {
 			// simulacia sa zastavi ak su vsetky bunky mrtve
-			
+
 			stop();
 		}
 		cells = newCells;
