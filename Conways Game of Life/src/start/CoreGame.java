@@ -21,6 +21,16 @@ public class CoreGame extends Canvas {
 	private BufferStrategy bf;
 	private GameFrame g;
 
+	private int speed = 500;
+
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
 	CoreGame(final GameFrame g) {
 		this.g = g;
 		bf = getBufferStrategy();
@@ -45,12 +55,13 @@ public class CoreGame extends Canvas {
 				repaint();
 			}
 		});
-		t = new Timer(500, new ActionListener() {
+		t = new Timer(speed, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cycle();
 				g.buttons.setCycles();
+				g.game.setSpeed(1000);
 			}
 		});
 

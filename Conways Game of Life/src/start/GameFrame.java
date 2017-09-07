@@ -10,6 +10,7 @@ public class GameFrame {
 
 	public CoreGame game;
 	public GameButtons buttons;
+	public SpeedSlider slider;
 
 	GameFrame() {
 
@@ -17,12 +18,14 @@ public class GameFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game = new CoreGame(this);
 		buttons = new GameButtons(this);
+		slider = new SpeedSlider(this);
 		frame.setLayout(new BorderLayout());
-		frame.add(buttons, BorderLayout.PAGE_START);
+		frame.add(buttons, BorderLayout.NORTH);
 		frame.add(game, BorderLayout.CENTER);
+		frame.add(slider, BorderLayout.PAGE_END);
 		game.init();
-		frame.pack();
-		frame.setSize(800, 800);
+
+		frame.setSize(1000, 1000);
 		frame.setVisible(true);
 
 		// vycentruje mi okno
