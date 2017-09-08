@@ -12,6 +12,7 @@ public class SpeedSlider extends JPanel {
 	private GameFrame g;
 	public JLabel lblResult;
 	public JSlider slider;
+	public int sliSpeed;
 
 	public SpeedSlider(final GameFrame g) {
 		this.g = g;
@@ -26,8 +27,10 @@ public class SpeedSlider extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 
-				lblResult.setText("cycle/ms: " + String.valueOf(slider.getValue()));
-				g.game.setSpeed(slider.getValue());
+				lblResult.setText("ms/cycle: " + String.valueOf(slider.getValue()));
+				int s = slider.getValue();
+				sliSpeed = slider.getValue();
+				g.game.setSpeed(s);
 			}
 
 		});

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Timer;
 
@@ -55,13 +56,20 @@ public class CoreGame extends Canvas {
 				repaint();
 			}
 		});
+
 		t = new Timer(speed, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				cycle();
+				try {
+					TimeUnit.MILLISECONDS.sleep(g.slider.sliSpeed);
+					cycle();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				g.buttons.setCycles();
-				g.game.setSpeed(1000);
+				// g.game.setSpeed(speed);
 			}
 		});
 
@@ -131,7 +139,8 @@ public class CoreGame extends Canvas {
 
 	// v tejto metode zistim kolko ma dana bunka susedov a teda ci zije alebo je
 	// mrtva alebo sa ma vytvorit nova bunka
-	private void cycle() {
+	private void cycle() throws InterruptedException {
+
 		cycles++;
 		newCells = new byte[size][size];
 		int totalSum = 0;
