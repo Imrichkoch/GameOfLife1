@@ -22,7 +22,7 @@ public class CoreGame extends Canvas {
 	private BufferStrategy bf;
 	private GameFrame g;
 
-	private int speed = 500;
+	private int speed = 100;
 
 	public int getSpeed() {
 		return speed;
@@ -62,7 +62,7 @@ public class CoreGame extends Canvas {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					TimeUnit.MILLISECONDS.sleep(g.slider.sliSpeed);
+					TimeUnit.MILLISECONDS.sleep(g.slider.getSliSpeed());
 					cycle();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
