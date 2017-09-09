@@ -30,6 +30,7 @@ public class SpeedSlider extends JPanel {
 		slider = new JSlider(1, 1000, 500);
 
 		slider.setBorder(new TitledBorder("Speed"));
+		lblResult.setText("ms/cycle: " + String.valueOf(slider.getValue() + g.game.getSpeed()));
 		slider.addChangeListener(new ChangeListener() {
 
 			@Override
