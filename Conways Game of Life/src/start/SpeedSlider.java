@@ -4,8 +4,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class SpeedSlider extends JPanel {
 
@@ -28,19 +26,13 @@ public class SpeedSlider extends JPanel {
 		lblResult = new JLabel();
 
 		slider = new JSlider(1, 1000, 500);
-
 		slider.setBorder(new TitledBorder("Speed"));
 		lblResult.setText("ms/cycle: " + String.valueOf(slider.getValue() + g.game.getSpeed()));
-		slider.addChangeListener(new ChangeListener() {
+		slider.addChangeListener(e -> {
 
-			@Override
-			public void stateChanged(ChangeEvent e) {
-
-				lblResult.setText("ms/cycle: " + String.valueOf(slider.getValue() + g.game.getSpeed()));
-				int s = slider.getValue();
-				sliSpeed = slider.getValue();
-
-			}
+			lblResult.setText("ms/cycle: " + String.valueOf(slider.getValue() + g.game.getSpeed()));
+			int s = slider.getValue();
+			sliSpeed = slider.getValue();
 
 		});
 		add(lblResult);

@@ -16,9 +16,11 @@ public class GameFrame {
 
 		JFrame frame = new JFrame("Game Of Life");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		game = new CoreGame(this);
 		buttons = new GameButtons(this);
 		slider = new SpeedSlider(this);
+
 		frame.setLayout(new BorderLayout());
 		frame.add(buttons, BorderLayout.NORTH);
 		frame.add(game, BorderLayout.CENTER);
